@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quantum Panel</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              quantum: '#5068d8',
+              quantumDark: '#3647a5',
+              signal: '#6875f5',
+              ink: '#0f1117',
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --bg-deep: #0f1117;
+        --bg-mid: #161b26;
+        --bg-soft: #1a1f2e;
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-bg-strong: rgba(255, 255, 255, 0.07);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --glass-border-strong: rgba(255, 255, 255, 0.22);
+        --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+        --accent-shadow: 0 8px 24px rgba(80, 104, 216, 0.24);
+      }
+
+      * {
+        font-family: 'Inter', sans-serif;
+      }
+
+      .brand-font {
+        font-family: 'Inter', sans-serif;
+      }
+
+      .mono-font {
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      .tech-bg {
+        background:
+          radial-gradient(1000px 600px at 0% 0%, rgba(98, 112, 143, 0.14), transparent 55%),
+          radial-gradient(900px 700px at 100% 100%, rgba(80, 104, 216, 0.08), transparent 50%),
+          linear-gradient(180deg, var(--bg-deep), var(--bg-mid) 48%, var(--bg-soft));
+      }
+
+      .panel-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: var(--glass-shadow);
+      }
+
+      .border-glow {
+        border-color: var(--glass-border-strong);
+        box-shadow: var(--glass-shadow);
+      }
+
+      .grid-overlay {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+
+      input,
+      textarea,
+      select,
+      button,
+      .action-link {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition:
+          border-color 180ms ease,
+          background-color 180ms ease,
+          box-shadow 180ms ease,
+          backdrop-filter 180ms ease,
+          -webkit-backdrop-filter 180ms ease,
+          transform 180ms ease;
+      }
+
+      button,
+      .action-link {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+      }
+
+      button:hover,
+      .action-link:hover {
+        border-color: rgba(255, 255, 255, 0.24);
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+
+      .primary-btn {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(126, 142, 255, 0.28);
+        box-shadow: var(--glass-shadow), var(--accent-shadow);
+      }
+
+      .primary-btn:hover {
+        border-color: rgba(126, 142, 255, 0.42);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28), 0 10px 28px rgba(80, 104, 216, 0.32);
+      }
+
+      .tabBtn {
+        background: rgba(255, 255, 255, 0.05);
+        color: #d6deeb;
+        font-weight: 500;
+      }
+
+      .tabBtn.active {
+        background: rgba(255, 255, 255, 0.09);
+        color: #ffffff;
+        border-color: rgba(126, 142, 255, 0.34);
+        box-shadow: var(--glass-shadow), var(--accent-shadow);
+      }
+
+      .status-dot {
+        box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.08);
+      }
+    </style>
+  </head>
+
+  <body class="tech-bg min-h-screen text-slate-100">
+    <div class="grid-overlay min-h-screen">
+      <main class="mx-auto w-full max-w-7xl p-4 md:p-6 lg:p-8">
+        <section id="authBox" class="mx-auto max-w-5xl grid gap-4 lg:grid-cols-2">
+          <div class="panel-card rounded-3xl p-6 md:p-8">
+            <p class="text-xs uppercase tracking-[0.25em] text-slate-400">Qu4ntumF0rc3</p>
+            <h1 class="brand-font mt-3 text-4xl md:text-5xl font-semibold text-white">Quantum Panel</h1>
+            <p class="mt-3 text-slate-300">Modern Debian server panel with live resources, AI assistant, team chat, NAS control, and user privileges.</p>
+
+            <div class="mt-6 grid gap-3 sm:grid-cols-2">
+              <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                <p class="text-xs text-slate-400 uppercase tracking-wide">Realtime</p>
+                <p class="font-semibold">Live CPU/RAM/Disk/Net</p>
+              </div>
+              <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                <p class="text-xs text-slate-400 uppercase tracking-wide">Control</p>
+                <p class="font-semibold">Role & file permissions</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card rounded-3xl p-6 md:p-8">
+            <h2 class="brand-font text-2xl font-semibold text-white">Sign In</h2>
+            <p class="text-sm text-slate-300 mt-1">Enter admin or user credentials to access the workspace.</p>
+            <form id="loginForm" class="mt-5 space-y-3">
+              <input id="usernameOrEmail" class="w-full rounded-xl border border-white/20 bg-slate-950/40 px-3 py-3 text-slate-100 placeholder:text-slate-400 outline-none focus:border-white/30" placeholder="Username or Email" required />
+              <input id="password" type="password" class="w-full rounded-xl border border-white/20 bg-slate-950/40 px-3 py-3 text-slate-100 placeholder:text-slate-400 outline-none focus:border-white/30" placeholder="Password" required />
+              <button class="primary-btn w-full rounded-xl px-4 py-3 font-semibold text-slate-100">Enter Workspace</button>
+            </form>
+            <p id="authMessage" class="mt-3 text-sm text-rose-300"></p>
+          </div>
+        </section>
+
+        <section id="appBox" class="hidden">
+          <header class="panel-card border-glow rounded-2xl px-4 py-4 mb-4 relative overflow-hidden">
+            <div class="relative z-10 flex flex-col gap-4">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Workspace</p>
+                  <h2 class="brand-font text-2xl md:text-3xl font-semibold text-white">Quantum Operations</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button id="mobileNavToggle" class="lg:hidden rounded-xl px-3 py-2 text-sm">Menu</button>
+                  <button id="logoutBtn" class="rounded-xl bg-slate-900/80 border border-white/20 px-4 py-2 text-sm hover:bg-slate-900">Logout</button>
+                </div>
+              </div>
+
+              <div class="grid gap-3 md:grid-cols-[1.2fr,1fr] xl:grid-cols-[1.5fr,1fr,1fr]">
+                <div class="rounded-2xl bg-black/30 border border-white/10 p-4">
+                  <p id="welcomeText" class="text-sm text-slate-200"></p>
+                  <div class="mt-3 flex flex-wrap items-center gap-2 text-xs mono-font">
+                    <span id="userRoleBadge" class="rounded-xl bg-black/40 border border-white/20 px-3 py-1"></span>
+                    <span id="hostLabel" class="rounded-xl bg-black/40 border border-white/20 px-3 py-1">HOST --</span>
+                    <span id="uptimeLabel" class="rounded-xl bg-black/40 border border-white/20 px-3 py-1">UPTIME --</span>
+                  </div>
+                </div>
+
+                <div class="rounded-2xl bg-black/30 border border-white/10 p-4">
+                  <p class="text-xs uppercase tracking-wide text-slate-400">Status</p>
+                  <div class="mt-3 flex items-center gap-3">
+                    <span id="onlineDot" class="status-dot h-3 w-3 rounded-full bg-emerald-400"></span>
+                    <div>
+                      <p id="onlineText" class="text-sm font-semibold text-emerald-300">ONLINE</p>
+                      <p class="text-xs text-slate-400">Live server telemetry active</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="rounded-2xl bg-black/30 border border-white/10 p-4 xl:block hidden">
+                  <p class="text-xs uppercase tracking-wide text-slate-400">Quick Stats</p>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    <span id="quickCpu" class="rounded-xl bg-black/40 border border-white/20 px-3 py-1 text-xs">CPU --</span>
+                    <span id="quickRam" class="rounded-xl bg-black/40 border border-white/20 px-3 py-1 text-xs">RAM --</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div id="sidebarOverlay" class="hidden fixed inset-0 z-30 bg-black/50 lg:hidden"></div>
+
+          <div class="grid gap-4 lg:grid-cols-[280px,1fr]">
+            <aside id="sidebarShell" class="hidden lg:block panel-card border-glow rounded-2xl p-3 h-max lg:sticky lg:top-6 z-40">
+              <div class="rounded-2xl bg-black/25 border border-white/10 p-3">
+                <p class="text-xs uppercase tracking-wide text-slate-300">Navigation</p>
+                <p class="mt-1 text-xs text-slate-400">Inspired by the Nexus-style panel layout</p>
+              </div>
+
+              <nav id="tabs" class="mt-3 space-y-2">
+                <button data-tab="system" class="tabBtn active w-full rounded-xl border border-white/20 px-3 py-2 text-left">System Overview</button>
+                <button data-tab="performance" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Performance</button>
+                <button data-tab="storage" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Storage</button>
+                <button data-tab="processes" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Processes</button>
+                <button data-tab="chat" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Team Chat</button>
+                <button data-tab="ai" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">AI Assistant</button>
+                <button data-tab="terminal" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Terminal</button>
+                <button data-tab="files" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Files & NAS</button>
+                <button data-tab="users" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Users & Roles</button>
+                <button data-tab="settings" class="tabBtn w-full rounded-xl border border-white/20 px-3 py-2 text-left">Settings</button>
+              </nav>
+
+              <div class="mt-4 rounded-2xl bg-black/25 border border-white/10 p-3">
+                <p class="text-xs uppercase tracking-wide text-slate-300">Quick Actions</p>
+                <div class="mt-2 grid gap-2">
+                  <button data-target-tab="chat" class="jumpTab rounded-xl px-3 py-2 text-left text-sm">Open team chat</button>
+                  <button data-target-tab="files" class="jumpTab rounded-xl px-3 py-2 text-left text-sm">Browse storage</button>
+                  <button data-target-tab="ai" class="jumpTab rounded-xl px-3 py-2 text-left text-sm">Ask Quantum AI</button>
+                  <button data-target-tab="processes" class="jumpTab rounded-xl px-3 py-2 text-left text-sm">Inspect processes</button>
+                </div>
+              </div>
+            </aside>
+
+            <section class="space-y-4">
+              <div id="tab-system" class="tabPanel panel-card border-glow rounded-2xl p-4 md:p-6 space-y-4">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <h3 class="brand-font text-xl font-semibold">System Overview</h3>
+                    <p class="text-sm text-slate-300">Live server health, resource pressure, and recent operator activity.</p>
+                  </div>
+                  <button id="refreshStatsBtn" class="rounded-xl px-3 py-2 text-sm">Refresh now</button>
+                </div>
+
+                <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
+                  <article class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">CPU</p>
+                    <p id="cpuValue" class="text-3xl font-semibold mt-1">0%</p>
+                    <div class="mt-3 h-2 bg-white/10 rounded-full overflow-hidden"><div id="cpuBar" class="h-full bg-cyan-300" style="width:0%"></div></div>
+                  </article>
+                  <article class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-emerald-200">RAM</p>
+                    <p id="ramValue" class="text-3xl font-semibold mt-1">0%</p>
+                    <p id="ramRaw" class="mt-1 text-xs text-slate-400">0 GB / 0 GB</p>
+                    <div class="mt-3 h-2 bg-white/10 rounded-full overflow-hidden"><div id="ramBar" class="h-full bg-emerald-300" style="width:0%"></div></div>
+                  </article>
+                  <article class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">Disk</p>
+                    <p id="diskValue" class="text-3xl font-semibold mt-1">0%</p>
+                    <p id="diskRaw" class="mt-1 text-xs text-slate-400">0 GB / 0 GB</p>
+                    <div class="mt-3 h-2 bg-white/10 rounded-full overflow-hidden"><div id="diskBar" class="h-full bg-orange-300" style="width:0%"></div></div>
+                  </article>
+                  <article class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-300">Network</p>
+                    <p id="netValue" class="text-sm mt-2">RX: 0 KB/s | TX: 0 KB/s</p>
+                    <p id="osLabel" class="mt-5 text-xs text-slate-400">OS --</p>
+                  </article>
+                </div>
+
+                <div class="grid gap-4 xl:grid-cols-[1.1fr,0.9fr]">
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <div class="flex items-center justify-between gap-2">
+                      <div>
+                        <p class="text-xs uppercase tracking-wide text-slate-300">Quick Actions</p>
+                        <h4 class="brand-font text-lg font-semibold mt-1">Control Deck</h4>
+                      </div>
+                      <span class="mono-font text-xs text-slate-400">CONTROL DECK</span>
+                    </div>
+
+                    <div class="mt-4 grid gap-2 sm:grid-cols-3">
+                      <button data-target-tab="files" class="jumpTab rounded-2xl border border-white/15 bg-slate-950/35 p-3 text-left">
+                        <p class="text-xs text-slate-400 uppercase">Storage</p>
+                        <p class="mt-1 font-semibold">Open NAS browser</p>
+                      </button>
+                      <button data-target-tab="chat" class="jumpTab rounded-2xl border border-white/15 bg-slate-950/35 p-3 text-left">
+                        <p class="text-xs text-slate-400 uppercase">Comms</p>
+                        <p class="mt-1 font-semibold">Go to team chat</p>
+                      </button>
+                      <button data-target-tab="ai" class="jumpTab rounded-2xl border border-white/15 bg-slate-950/35 p-3 text-left">
+                        <p class="text-xs text-slate-400 uppercase">Assistant</p>
+                        <p class="mt-1 font-semibold">Open AI terminal</p>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <div class="flex items-center justify-between gap-2">
+                      <div>
+                        <p class="text-xs uppercase tracking-wide text-slate-300">Activity Log</p>
+                        <h4 class="brand-font text-lg font-semibold mt-1">Recent Events</h4>
+                      </div>
+                      <span class="mono-font text-xs text-slate-400">LIVE</span>
+                    </div>
+                    <div id="activityList" class="mt-4 space-y-2"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="tab-performance" class="tabPanel hidden panel-card border-glow rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">Performance</h3>
+                  <p class="text-sm text-slate-300">Detailed runtime view for CPU, RAM, disk pressure, and host state.</p>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">Live Metrics</p>
+                    <div class="mt-4 space-y-4">
+                      <div>
+                        <div class="flex items-center justify-between text-sm"><span>CPU load</span><span id="perfCpuText">0%</span></div>
+                        <div class="mt-2 h-2 rounded-full bg-white/10 overflow-hidden"><div id="perfCpuBar" class="h-full bg-cyan-300" style="width:0%"></div></div>
+                      </div>
+                      <div>
+                        <div class="flex items-center justify-between text-sm"><span>RAM pressure</span><span id="perfRamText">0%</span></div>
+                        <div class="mt-2 h-2 rounded-full bg-white/10 overflow-hidden"><div id="perfRamBar" class="h-full bg-emerald-300" style="width:0%"></div></div>
+                      </div>
+                      <div>
+                        <div class="flex items-center justify-between text-sm"><span>Disk usage</span><span id="perfDiskText">0%</span></div>
+                        <div class="mt-2 h-2 rounded-full bg-white/10 overflow-hidden"><div id="perfDiskBar" class="h-full bg-orange-300" style="width:0%"></div></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-300">Host Details</p>
+                    <div id="performanceFacts" class="mt-4 grid gap-2 text-sm text-slate-200"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="tab-storage" class="tabPanel hidden panel-card border-glow rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">Storage</h3>
+                  <p class="text-sm text-slate-300">Mounted partitions and capacity view.</p>
+                </div>
+                <div id="storageTable" class="rounded-2xl border border-white/10 bg-black/25 p-3 text-sm overflow-x-auto"></div>
+              </div>
+
+              <div id="tab-processes" class="tabPanel hidden panel-card border-glow rounded-2xl p-4 md:p-6 space-y-4">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <h3 class="brand-font text-xl font-semibold">Processes</h3>
+                    <p class="text-sm text-slate-300">Top active processes on the host.</p>
+                  </div>
+                  <button id="refreshProcessesBtn" class="rounded-xl px-3 py-2 text-sm">Refresh</button>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-3">
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">Total</p>
+                    <p id="processTotal" class="mt-1 text-2xl font-semibold">0</p>
+                  </div>
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">Running</p>
+                    <p id="processRunning" class="mt-1 text-2xl font-semibold">0</p>
+                  </div>
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">Blocked</p>
+                    <p id="processBlocked" class="mt-1 text-2xl font-semibold">0</p>
+                  </div>
+                </div>
+
+                <div id="processesTable" class="rounded-2xl border border-white/10 bg-black/25 p-3 text-sm overflow-x-auto"></div>
+              </div>
+
+              <div id="tab-chat" class="tabPanel hidden panel-card rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">Team Chat</h3>
+                  <p class="text-sm text-slate-300">Fast channel for your team operations.</p>
+                </div>
+                <div id="chatMessages" class="h-[55vh] min-h-64 overflow-auto rounded-2xl border border-white/10 bg-black/20 p-3 space-y-2"></div>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <input id="chatInput" class="flex-1 rounded-xl border border-white/20 bg-slate-950/40 px-3 py-3 placeholder:text-slate-400 outline-none focus:border-white/30" placeholder="Type and press Enter..." />
+                  <button id="chatSendBtn" class="primary-btn rounded-xl px-5 py-3 font-semibold text-slate-100">Send</button>
+                </div>
+              </div>
+
+              <div id="tab-ai" class="tabPanel hidden panel-card rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">AI Assistant</h3>
+                  <p class="text-sm text-slate-300">Limited to Linux, AI, coding, and tech news.</p>
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                  <button class="aiPrompt rounded-lg border border-white/20 bg-black/25 px-3 py-1.5 text-sm" data-prompt="Give me today's important AI news summary in 5 bullets.">AI news</button>
+                  <button class="aiPrompt rounded-lg border border-white/20 bg-black/25 px-3 py-1.5 text-sm" data-prompt="Teach me Linux permissions in beginner-friendly steps.">Linux lesson</button>
+                  <button class="aiPrompt rounded-lg border border-white/20 bg-black/25 px-3 py-1.5 text-sm" data-prompt="Explain this bug like I'm a beginner fullstack dev.">Debug help</button>
+                </div>
+
+                <textarea id="aiInput" rows="5" class="w-full rounded-xl border border-white/20 bg-slate-950/40 px-3 py-3 placeholder:text-slate-400 outline-none focus:border-white/30" placeholder="Ask your question..."></textarea>
+                <div class="flex justify-end">
+                  <button id="aiAskBtn" class="primary-btn rounded-xl px-6 py-3 font-semibold text-slate-100">Ask AI</button>
+                </div>
+                <pre id="aiOutput" class="rounded-2xl border border-white/10 bg-black/30 p-4 whitespace-pre-wrap min-h-44"></pre>
+              </div>
+
+              <div id="tab-terminal" class="tabPanel hidden panel-card border-glow rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">Terminal</h3>
+                  <p class="text-sm text-slate-300">Terminal-style admin section for host access guidance.</p>
+                </div>
+
+                <div class="rounded-2xl border border-amber-300/25 bg-amber-500/10 p-4 text-sm text-amber-100">
+                  Direct browser-to-host shell access is intentionally not wired here. The safe path is standard SSH to the Debian host.
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-black/50 p-4 mono-font text-sm">
+                  <p class="text-slate-200">$ ssh KyronX@192.168.1.82</p>
+                  <p class="mt-3 text-slate-300">Use this from your own machine after SSH is enabled on Debian.</p>
+                  <p class="mt-1 text-slate-500">Later we can integrate a hardened gateway approach, but not a raw web shell.</p>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <p class="text-xs uppercase tracking-wide text-slate-400">Terminal Plan</p>
+                  <div class="mt-3 space-y-2 text-sm text-slate-200">
+                    <p>1. Install and enable OpenSSH on Debian</p>
+                    <p>2. Use key-based login</p>
+                    <p>3. Restrict panel users from direct shell unless needed</p>
+                    <p>4. Keep terminal outside the web app for now</p>
+                  </div>
+                </div>
+              </div>
+
+              <div id="tab-files" class="tabPanel hidden panel-card rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">Files & NAS</h3>
+                  <p class="text-sm text-slate-300">Browse and control storage based on your privileges.</p>
+                </div>
+
+                <div id="fileBreadcrumbs" class="flex flex-wrap gap-2 text-xs mono-font text-slate-300"></div>
+
+                <div class="grid gap-2 sm:grid-cols-[1fr,auto]">
+                  <input id="filePath" class="rounded-xl border border-white/20 bg-slate-950/40 px-3 py-3 placeholder:text-slate-400 outline-none focus:border-white/30" placeholder="Path (example: projects/frontend)" />
+                  <button id="listFilesBtn" class="rounded-xl px-5 py-3">List</button>
+                </div>
+
+                <div class="grid gap-2 sm:grid-cols-[1fr,auto]">
+                  <input id="uploadInput" type="file" class="rounded-xl border border-white/20 bg-slate-950/50 px-3 py-3" />
+                  <button id="uploadBtn" class="primary-btn rounded-xl px-5 py-3 font-semibold text-slate-100">Upload</button>
+                </div>
+
+                <div id="fileList" class="rounded-2xl border border-white/10 bg-black/25 p-3 text-sm"></div>
+              </div>
+
+              <div id="tab-users" class="tabPanel hidden panel-card rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">Users & Roles</h3>
+                  <p class="text-sm text-slate-300">Create users and assign secure permissions.</p>
+                </div>
+
+                <form id="createUserForm" class="grid gap-2 md:grid-cols-3">
+                  <input id="newUsername" class="rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2.5" placeholder="username" required />
+                  <input id="newEmail" class="rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2.5" placeholder="email" required />
+                  <input id="newPassword" class="rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2.5" placeholder="password" required />
+
+                  <select id="newRole" class="rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2.5">
+                    <option value="user">user</option>
+                    <option value="admin">admin</option>
+                  </select>
+
+                  <label class="flex items-center gap-2 rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2.5 text-sm"><input type="checkbox" id="newCanUpload" /> upload</label>
+                  <label class="flex items-center gap-2 rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2.5 text-sm"><input type="checkbox" id="newCanDownload" checked /> download</label>
+                  <label class="flex items-center gap-2 rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2.5 text-sm"><input type="checkbox" id="newCanDelete" /> delete</label>
+
+                  <button class="primary-btn md:col-span-3 rounded-xl px-4 py-2.5 font-semibold text-slate-100">Create User</button>
+                </form>
+
+                <div id="usersTable" class="rounded-2xl border border-white/10 bg-black/25 p-3 text-sm overflow-x-auto"></div>
+              </div>
+
+              <div id="tab-settings" class="tabPanel hidden panel-card border-glow rounded-2xl p-4 md:p-6 space-y-4">
+                <div>
+                  <h3 class="brand-font text-xl font-semibold">Settings</h3>
+                  <p class="text-sm text-slate-300">Project-level notes and deployment guidance.</p>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">Environment</p>
+                    <div class="mt-3 space-y-2 text-sm text-slate-200">
+                      <p>Panel host: <span class="mono-font">192.168.1.82</span></p>
+                      <p>OS target: <span class="mono-font">Debian</span></p>
+                      <p>AI provider: <span class="mono-font">Groq API</span></p>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl bg-black/25 border border-white/10 p-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-400">Security Notes</p>
+                    <div class="mt-3 space-y-2 text-sm text-slate-200">
+                      <p>Change the default admin password immediately.</p>
+                      <p>Use HTTPS through Nginx.</p>
+                      <p>Limit upload/delete permissions to trusted users only.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="hidden fixed right-4 bottom-4 z-50 rounded-xl border border-white/20 bg-slate-950/90 text-slate-100 px-4 py-3 text-sm"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>
